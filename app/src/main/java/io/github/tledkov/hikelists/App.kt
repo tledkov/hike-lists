@@ -1,27 +1,35 @@
 package io.github.tledkov.hikelists
 
 import android.app.Application
-import io.github.tledkov.hikelists.data.ItemRepository
-import io.github.tledkov.hikelists.data.ItemRepositoryImpl
-import io.github.tledkov.hikelists.data.AppDatabase
+import io.github.tledkov.hikelists.data.CategoryRepository
+import io.github.tledkov.hikelists.data.CategoryRepositoryImpl
+import io.github.tledkov.hikelists.data.InventoryItemRepository
+import io.github.tledkov.hikelists.data.InventoryItemRepositoryImpl
+import io.github.tledkov.hikelists.data.HikeListsDatabase
+import kotlinx.coroutines.runBlocking
 
 class App : Application() {
-    private lateinit var database: AppDatabase
+    private lateinit var database: HikeListsDatabase
 
-    lateinit var repository: ItemRepository
+    lateinit var inventoryItemRepository: InventoryItemRepository
+    lateinit var categoryRepository: CategoryRepository
 
     override fun onCreate() {
         super.onCreate()
 
-        database = AppDatabase.buildDatabase(
-            applicationContext,
-            DATABASE_NAME
-        )
+        database = HikeListsDatabase.buildDatabase(applicationContext)
+        database.init()
 
-        repository = ItemRepositoryImpl(database.itemDao())
+        categoryRepository = CategoryRepositoryImpl(database.categoryDao())
+
+        runBlocking {
+            inventoryItemRepository = InventoryItemRepositoryImpl(
+                database.itemDao(),
+                categoryRepository.getAllCategories().toSet()
+            )
+        }
     }
 
     companion object {
-        private const val DATABASE_NAME = "hiking-list.db"
     }
 }

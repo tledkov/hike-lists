@@ -14,8 +14,8 @@ data class CategoryEntity(
     val description: String,
     val color: String
 ) {
-
     companion object {
         const val TABLE_NAME = "category"
+        const val ID = "id"
     }
 }

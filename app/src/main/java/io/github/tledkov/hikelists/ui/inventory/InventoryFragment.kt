@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.tledkov.hikelists.App
 import io.github.tledkov.hikelists.data.entity.ItemEntity
 import io.github.tledkov.hikelists.databinding.FragmentInventoryBinding
+import io.github.tledkov.hikelists.domain.InventoryItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -35,20 +36,18 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
         val root: View = binding.root
 
         initRecyclerView()
-        retrievePersons()
+        retrieveItems()
 
         binding.addItemButton.setOnClickListener {
-            val itemEntity = ItemEntity(
-                id = ThreadLocalRandom.current().nextInt(),
+            val itemEntity = InventoryItem(
                 name = "Name " + ThreadLocalRandom.current().nextInt(),
                 description = "Some description " + UUID.randomUUID(),
-                img = "",
-                weightGr = ThreadLocalRandom.current().nextInt()
+                weightGr = ThreadLocalRandom.current().nextInt() % 5000
             )
 
             itemAdapter.addItem(itemEntity)
 
-            insertPerson(itemEntity)
+            insertItem(itemEntity)
         }
 
         return root
@@ -69,20 +68,20 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
         }
     }
 
-    override fun onItemClicked(item: ItemEntity) {
+    override fun onItemClicked(item: InventoryItem) {
     }
 
-    private fun insertPerson(itemEntity: ItemEntity) {
+    private fun insertItem(item: InventoryItem) {
         // Work on background thread
         lifecycleScope.launch(Dispatchers.IO) {
-            (activity?.applicationContext as App).repository.insert(itemEntity = itemEntity)
+            (activity?.applicationContext as App).inventoryItemRepository.insert(item)
         }
     }
 
-    private fun retrievePersons() {
+    private fun retrieveItems() {
         // Work on background thread
         lifecycleScope.launch(Dispatchers.IO) {
-            val persons = (activity?.applicationContext as App).repository.getAllPersons()
+            val persons = (activity?.applicationContext as App).inventoryItemRepository.getAllItems()
             // Work on main thread
 
             withContext(Dispatchers.Main) {

@@ -13,18 +13,16 @@ typealias ItemId = Int
 data class ItemEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
+    val categoryId: Int?,
     val weightGr: Int,
     val name: String,
-    val description: String,
-    val img: String
+    val description: String = "",
+    val img: String = ""
 ) : Serializable {
 
     companion object {
         const val TABLE_NAME = "item"
 
-        const val ID = "Id"
-        const val NAME = "Name"
-        const val DESCRIPTION = "Description"
-        const val AVATAR_URL = "AvatarUrl"
+        const val ID = "id"
     }
 }

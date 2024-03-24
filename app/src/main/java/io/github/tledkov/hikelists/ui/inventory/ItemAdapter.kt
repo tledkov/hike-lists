@@ -5,11 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tledkov.hikelists.data.entity.ItemEntity
 import io.github.tledkov.hikelists.databinding.ItemBinding
+import io.github.tledkov.hikelists.domain.InventoryItem
 
 class ItemAdapter(private val itemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<ItemViewHolder>() {
 
-    private val itemsList = mutableListOf<ItemEntity>()
+    private val itemsList = mutableListOf<InventoryItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding: ItemBinding = ItemBinding.inflate(
@@ -19,12 +20,12 @@ class ItemAdapter(private val itemClickListener: OnItemClickListener) :
         return ItemViewHolder(itemClickListener, binding)
     }
 
-    fun addItem(itemEntity: ItemEntity) {
+    fun addItem(itemEntity: InventoryItem) {
         itemsList.add(itemEntity)
         notifyDataSetChanged()
     }
 
-    fun setItems(itemEntities: List<ItemEntity>) {
+    fun setItems(itemEntities: List<InventoryItem>) {
         itemsList.clear()
         itemsList.addAll(itemEntities)
         notifyDataSetChanged()
@@ -45,6 +46,6 @@ class ItemAdapter(private val itemClickListener: OnItemClickListener) :
     override fun getItemCount() = itemsList.size
 
     interface OnItemClickListener {
-        fun onItemClicked(item: ItemEntity)
+        fun onItemClicked(item: InventoryItem)
     }
 }
