@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_lists"
+        android:icon="@drawable/baseline_checklist_rtl_24"
+        android:title="@string/menu_lists" />
+
+    <item
+        android:id="@+id/navigation_inventory"
+        android:icon="@drawable/baseline_hiking_24"
+        android:title="@string/menu_inventory" />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="@string/manu_settings" />
+</menu>

@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">HikeLists</string>
+
+    <!-- Menu -->
+    <string name="menu_lists">Lists</string>
+    <string name="menu_inventory">Inventory</string>
+    <string name="manu_settings">Settings</string>
+
+    <!--  -->
+</resources>
