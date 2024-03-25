@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_inventory"
-        android:name="io.github.tledkov.hikelists.ui.inventory.InventoryFragment"
+        android:name="io.github.tledkov.hikelists.ui.inventory.AllInventoryFragment"
         android:label="@string/menu_inventory"
-        tools:layout="@layout/fragment_inventory" />
+        tools:layout="@layout/fragment_all_inventory" />
 
     <fragment
         android:id="@+id/navigation_settings"

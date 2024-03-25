@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.tledkov.hikelists.App
-import io.github.tledkov.hikelists.data.entity.ItemEntity
 import io.github.tledkov.hikelists.databinding.FragmentInventoryBinding
+import io.github.tledkov.hikelists.domain.Category
 import io.github.tledkov.hikelists.domain.InventoryItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +17,8 @@ import kotlinx.coroutines.withContext
 import java.util.UUID
 import java.util.concurrent.ThreadLocalRandom
 
-class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
+class InventoryFragment(val label: String, val items: List<InventoryItem>, val ctegory: Category?) :
+    Fragment(), ItemAdapter.OnItemClickListener {
 
     private var _binding: FragmentInventoryBinding? = null
 
@@ -81,7 +82,8 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
     private fun retrieveItems() {
         // Work on background thread
         lifecycleScope.launch(Dispatchers.IO) {
-            val persons = (activity?.applicationContext as App).inventoryItemRepository.getAllItems()
+            val persons =
+                (activity?.applicationContext as App).inventoryItemRepository.getAllItems()
             // Work on main thread
 
             withContext(Dispatchers.Main) {
