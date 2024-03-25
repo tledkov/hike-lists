@@ -17,8 +17,7 @@ import kotlinx.coroutines.withContext
 import java.util.UUID
 import java.util.concurrent.ThreadLocalRandom
 
-class InventoryFragment(val label: String, val items: List<InventoryItem>, val ctegory: Category?) :
-    Fragment(), ItemAdapter.OnItemClickListener {
+class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
 
     private var _binding: FragmentInventoryBinding? = null
 
