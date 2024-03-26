@@ -15,5 +15,7 @@
     <string name="category_secondary">Secondary</string>
     <string name="category_to_sleep">To Sleep</string>
     <string name="category_clothing">Clothing</string>
+    <string name="category_all_items">All Items</string>
+    <string name="category_not_category">Not categorized</string>
 
 </resources>

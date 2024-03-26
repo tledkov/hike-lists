@@ -4,18 +4,19 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class DynamicFragmentAdapter(f: Fragment, val mNumOfTabs: Int) :
+class DynamicFragmentAdapter(f: Fragment, val tabData: MutableList<AllInventoryFragment.TabData>) :
     FragmentStateAdapter(f) {
 
     override fun getItemCount(): Int {
-        return mNumOfTabs
+        return tabData.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        val b = Bundle()
-        b.putInt("position", position)
+        val fragBundle = Bundle()
+        fragBundle.putSerializable(ITEMS_KEY, tabData[position])
+
         val frag = InventoryFragment()
-        frag.setArguments(b)
+        frag.setArguments(fragBundle)
 
         return frag
     }

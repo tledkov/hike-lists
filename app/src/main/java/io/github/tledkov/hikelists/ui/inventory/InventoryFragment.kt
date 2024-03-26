@@ -9,14 +9,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.tledkov.hikelists.App
 import io.github.tledkov.hikelists.databinding.FragmentInventoryBinding
-import io.github.tledkov.hikelists.domain.Category
 import io.github.tledkov.hikelists.domain.InventoryItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.UUID
 import java.util.concurrent.ThreadLocalRandom
 
+const val ITEMS_KEY: String = "items"
 class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
 
     private var _binding: FragmentInventoryBinding? = null
@@ -36,7 +35,10 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
         val root: View = binding.root
 
         initRecyclerView()
-        retrieveItems()
+//        retrieveItems()
+
+        val items = arguments?.getSerializable(ITEMS_KEY)
+        itemAdapter.setItems((items as AllInventoryFragment.TabData).items)
 
         binding.addItemButton.setOnClickListener {
             val itemEntity = InventoryItem(
@@ -78,16 +80,16 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
         }
     }
 
-    private fun retrieveItems() {
-        // Work on background thread
-        lifecycleScope.launch(Dispatchers.IO) {
-            val persons =
-                (activity?.applicationContext as App).inventoryItemRepository.getAllItems()
-            // Work on main thread
-
-            withContext(Dispatchers.Main) {
-                itemAdapter.setItems(persons)
-            }
-        }
-    }
+//    private fun retrieveItems() {
+//        // Work on background thread
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            val persons =
+//                (activity?.applicationContext as App).inventoryItemRepository.getAllItems()
+//            // Work on main thread
+//
+//            withContext(Dispatchers.Main) {
+//                itemAdapter.setItems(persons)
+//            }
+//        }
+//    }
 }
