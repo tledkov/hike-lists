@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">HikeLists</string>
+
+    <!-- Menu -->
+    <string name="menu_lists">Lists</string>
+    <string name="menu_inventory">Inventory</string>
+    <string name="menu_settings">Settings</string>
+
+    <!--  -->
+    <string name="weight_gram">%1$d g</string>
+
+    <!-- Predefined categories -->
+    <string name="category_backpack">Backpack</string>
+    <string name="category_primary">Primary</string>
+    <string name="category_secondary">Secondary</string>
+    <string name="category_to_sleep">To Sleep</string>
+    <string name="category_clothing">Clothing</string>
+    <string name="category_all_items">All Items</string>
+    <string name="category_not_category">Not categorized</string>
+
+</resources>
