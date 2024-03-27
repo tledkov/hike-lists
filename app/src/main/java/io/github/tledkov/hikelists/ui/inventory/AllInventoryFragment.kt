@@ -35,7 +35,6 @@ class AllInventoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAllInventoryBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 

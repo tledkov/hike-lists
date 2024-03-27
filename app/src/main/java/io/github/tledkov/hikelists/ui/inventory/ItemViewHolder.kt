@@ -14,7 +14,8 @@ class ItemViewHolder(
         item.run {
             binding.nameTextView.text = name
             binding.descriptionTextView.text = description
-            binding.weightTextView.text = itemView.context.resources.getString(R.string.weight_gram, weightGr)
+            binding.weightTextView.text =
+                itemView.context.resources.getString(R.string.weight_gram, weight.value())
 
             binding.root.setOnClickListener {
                 itemClickListener.onItemClicked(item)

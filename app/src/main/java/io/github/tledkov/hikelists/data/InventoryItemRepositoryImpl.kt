@@ -3,6 +3,7 @@ package io.github.tledkov.hikelists.data
 import io.github.tledkov.hikelists.data.entity.ItemEntity
 import io.github.tledkov.hikelists.domain.Category
 import io.github.tledkov.hikelists.domain.InventoryItem
+import io.github.tledkov.hikelists.domain.Weight
 
 class InventoryItemRepositoryImpl(
     private val itemDao: ItemDao,
@@ -42,7 +43,7 @@ class InventoryItemRepositoryImpl(
             category = item.categoryId?.let {
                 categoryIdMap[it]
             },
-            item.weightGr,
+            Weight.from(item.weightGr),
             item.name,
             item.description,
             ""
@@ -52,7 +53,7 @@ class InventoryItemRepositoryImpl(
         ItemEntity(
             item.id,
             item.category?.id,
-            item.weightGr,
+            item.weight.value(),
             item.name,
             item.description,
             ""

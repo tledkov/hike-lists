@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.tledkov.hikelists.App
 import io.github.tledkov.hikelists.databinding.FragmentInventoryBinding
 import io.github.tledkov.hikelists.domain.InventoryItem
+import io.github.tledkov.hikelists.domain.Weight
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -44,7 +45,7 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
             val itemEntity = InventoryItem(
                 name = "Name " + ThreadLocalRandom.current().nextInt(),
                 description = "Some description " + UUID.randomUUID(),
-                weightGr = ThreadLocalRandom.current().nextInt() % 5000
+                weight = Weight.from(ThreadLocalRandom.current().nextInt() % 5000)
             )
 
             itemAdapter.addItem(itemEntity)
