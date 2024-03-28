@@ -17,5 +17,11 @@
     <string name="category_clothing">Clothing</string>
     <string name="category_all_items">All Items</string>
     <string name="category_not_category">Not categorized</string>
+    <string name="edit_item_item_name">Item name:</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="edit_item_category">Category:</string>
+    <string name="edit_item_weight">Weight:</string>
+    <string name="edit_item_notes">Notes:</string>
 
 </resources>
