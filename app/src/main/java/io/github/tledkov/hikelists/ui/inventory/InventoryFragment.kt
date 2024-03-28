@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.tledkov.hikelists.App
-import io.github.tledkov.hikelists.R
 import io.github.tledkov.hikelists.databinding.FragmentInventoryBinding
 import io.github.tledkov.hikelists.domain.InventoryItem
 import kotlinx.coroutines.Dispatchers
@@ -39,20 +37,6 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
 
         val items = arguments?.getSerializable(ITEMS_KEY)
         itemAdapter.setItems((items as AllInventoryFragment.TabData).items)
-
-        binding.addItemButton.setOnClickListener {
-            it.findNavController().navigate(R.id.action_navigation_inventory_to_editItemFragment)
-
-//            val itemEntity = InventoryItem(
-//                name = "Name " + ThreadLocalRandom.current().nextInt(),
-//                description = "Some description " + UUID.randomUUID(),
-//                weight = Weight.from(ThreadLocalRandom.current().nextInt() % 5000)
-//            )
-//
-//            itemAdapter.addItem(itemEntity)
-//
-//            insertItem(itemEntity)
-        }
 
         return root
     }
