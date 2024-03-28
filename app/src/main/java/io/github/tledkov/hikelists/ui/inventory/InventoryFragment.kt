@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.tledkov.hikelists.App
+import io.github.tledkov.hikelists.R
 import io.github.tledkov.hikelists.databinding.FragmentInventoryBinding
 import io.github.tledkov.hikelists.domain.InventoryItem
-import io.github.tledkov.hikelists.domain.Weight
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.UUID
-import java.util.concurrent.ThreadLocalRandom
+
 
 const val ITEMS_KEY: String = "items"
 class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
@@ -36,21 +36,22 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
         val root: View = binding.root
 
         initRecyclerView()
-//        retrieveItems()
 
         val items = arguments?.getSerializable(ITEMS_KEY)
         itemAdapter.setItems((items as AllInventoryFragment.TabData).items)
 
         binding.addItemButton.setOnClickListener {
-            val itemEntity = InventoryItem(
-                name = "Name " + ThreadLocalRandom.current().nextInt(),
-                description = "Some description " + UUID.randomUUID(),
-                weight = Weight.from(ThreadLocalRandom.current().nextInt() % 5000)
-            )
+            it.findNavController().navigate(R.id.action_navigation_inventory_to_editItemFragment)
 
-            itemAdapter.addItem(itemEntity)
-
-            insertItem(itemEntity)
+//            val itemEntity = InventoryItem(
+//                name = "Name " + ThreadLocalRandom.current().nextInt(),
+//                description = "Some description " + UUID.randomUUID(),
+//                weight = Weight.from(ThreadLocalRandom.current().nextInt() % 5000)
+//            )
+//
+//            itemAdapter.addItem(itemEntity)
+//
+//            insertItem(itemEntity)
         }
 
         return root
@@ -80,17 +81,4 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
             (activity?.applicationContext as App).inventoryItemRepository.insert(item)
         }
     }
-
-//    private fun retrieveItems() {
-//        // Work on background thread
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            val persons =
-//                (activity?.applicationContext as App).inventoryItemRepository.getAllItems()
-//            // Work on main thread
-//
-//            withContext(Dispatchers.Main) {
-//                itemAdapter.setItems(persons)
-//            }
-//        }
-//    }
 }

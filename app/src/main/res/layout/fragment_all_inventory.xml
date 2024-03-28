@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.github.tledkov.hikelists.MainActivity">
+    tools:context="io.github.tledkov.hikelists.MainActivity"
+    android:id="@+id/layout_all_inventory">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"

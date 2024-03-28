@@ -15,11 +15,20 @@
         android:id="@+id/navigation_inventory"
         android:name="io.github.tledkov.hikelists.ui.inventory.AllInventoryFragment"
         android:label="@string/menu_inventory"
-        tools:layout="@layout/fragment_all_inventory" />
+        tools:layout="@layout/fragment_all_inventory" >
+        <action
+            android:id="@+id/action_navigation_inventory_to_editItemFragment"
+            app:destination="@id/editItemFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"
         android:name="io.github.tledkov.hikelists.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/editItemFragment"
+        android:name="io.github.tledkov.hikelists.ui.inventory.EditItemFragment"
+        android:label="EditItemFragment" />
 </navigation>

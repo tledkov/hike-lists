@@ -56,7 +56,6 @@ class AllInventoryFragment : Fragment() {
     private fun loadTabData() {
         // Work on background thread
         lifecycleScope.launch(Dispatchers.IO) {
-//        runBlocking {
             val allItems: List<InventoryItem> =
                 (activity?.applicationContext as App).inventoryItemRepository.getAllItems()
             val categories: List<Category> =

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.github.tledkov.hikelists.MainActivity">
+    tools:context="io.github.tledkov.hikelists.MainActivity"
+    android:id="@+id/layout_edit_item">
 
     <TextView
         android:id="@+id/text_title"
