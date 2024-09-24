@@ -2,10 +2,9 @@ package io.github.tledkov.hikelists.data
 
 import android.graphics.Color
 import io.github.tledkov.hikelists.data.entity.CategoryEntity
-import io.github.tledkov.hikelists.data.entity.ItemEntity
 import io.github.tledkov.hikelists.domain.Category
-import io.github.tledkov.hikelists.domain.InventoryItem
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class CategoryRepositoryImpl(
     private val categoryDao: CategoryDao
@@ -23,8 +22,8 @@ class CategoryRepositoryImpl(
         categoryDao.deleteById(category.id)
     }
 
-    override suspend fun getAllCategories(): List<Category> {
-        return categoryDao.getAllCategoris().map(this::convert)
+    override fun getAllCategories(): Flow<List<Category>> {
+        return categoryDao.getAllCategories().map { it.map { convert(it) } }
     }
 
     private fun convert(cat: CategoryEntity): Category {

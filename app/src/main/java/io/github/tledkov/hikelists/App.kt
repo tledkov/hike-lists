@@ -6,6 +6,8 @@ import io.github.tledkov.hikelists.data.CategoryRepositoryImpl
 import io.github.tledkov.hikelists.data.InventoryItemRepository
 import io.github.tledkov.hikelists.data.InventoryItemRepositoryImpl
 import io.github.tledkov.hikelists.data.HikeListsDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 class App : Application() {
@@ -22,10 +24,11 @@ class App : Application() {
 
         categoryRepository = CategoryRepositoryImpl(database.categoryDao())
 
-        runBlocking {
+        runBlocking (Dispatchers.IO) {
+            val categories = categoryRepository.getAllCategories().first().toSet()
             inventoryItemRepository = InventoryItemRepositoryImpl(
                 database.itemDao(),
-                categoryRepository.getAllCategories().toSet()
+                categories
             )
         }
     }

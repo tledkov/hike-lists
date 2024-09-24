@@ -2,18 +2,30 @@ package io.github.tledkov.hikelists
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.github.tledkov.hikelists.databinding.ActivityMainBinding
+import io.github.tledkov.hikelists.ui.inventory.InventoryViewModel
+import io.github.tledkov.hikelists.ui.inventory.InventoryViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
+    private val viewModel: InventoryViewModel by viewModels {
+        InventoryViewModelFactory(
+            application,
+            (application as App).categoryRepository,
+            (application as App).inventoryItemRepository,
+        )
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

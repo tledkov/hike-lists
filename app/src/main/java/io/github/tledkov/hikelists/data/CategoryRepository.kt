@@ -2,6 +2,7 @@ package io.github.tledkov.hikelists.data
 
 import io.github.tledkov.hikelists.domain.Category
 import io.github.tledkov.hikelists.domain.InventoryItem
+import kotlinx.coroutines.flow.Flow
 
 interface CategoryRepository {
     suspend fun insert(category: Category): Long
@@ -10,5 +11,5 @@ interface CategoryRepository {
 
     suspend fun delete(category: Category)
 
-    suspend fun getAllCategories() : List<Category>
+    fun getAllCategories() : Flow<List<Category>>
 }

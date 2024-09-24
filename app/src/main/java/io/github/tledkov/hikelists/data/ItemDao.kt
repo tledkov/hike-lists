@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Update
 import androidx.room.Upsert
 import io.github.tledkov.hikelists.data.entity.ItemEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ItemDao {
@@ -26,12 +27,11 @@ interface ItemDao {
 
 
     @Query("SELECT * FROM ${ItemEntity.TABLE_NAME}")
-    suspend fun getAllItems(): List<ItemEntity>
-
+    fun getAllItems(): Flow<List<ItemEntity>>
 
     @Query("SELECT * FROM ${ItemEntity.TABLE_NAME} as i WHERE i.categoryId = :categoryId")
-    suspend fun getItems(categoryId: Int): List<ItemEntity>
+    fun getItems(categoryId: Int): Flow<List<ItemEntity>>
 
     @Query("SELECT * FROM ${ItemEntity.TABLE_NAME} as i WHERE i.categoryId IS NULL")
-    suspend fun getItemsWithoutCategory(): List<ItemEntity>
+    fun getItemsWithoutCategory(): Flow<List<ItemEntity>>
 }

@@ -12,9 +12,9 @@ class ItemViewHolder(
 
     fun bind(item: InventoryItem) {
         item.run {
-            binding.nameTextView.text = name
-            binding.descriptionTextView.text = description
-            binding.weightTextView.text =
+            binding.itemNameText.text = name
+            binding.itemDescriptionText.text = description
+            binding.itemWeightText.text =
                 itemView.context.resources.getString(R.string.weight_gram, weight.value())
 
             binding.root.setOnClickListener {

@@ -4,10 +4,12 @@ import io.github.tledkov.hikelists.data.entity.ItemEntity
 import io.github.tledkov.hikelists.domain.Category
 import io.github.tledkov.hikelists.domain.InventoryItem
 import io.github.tledkov.hikelists.domain.Weight
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class InventoryItemRepositoryImpl(
     private val itemDao: ItemDao,
-    private val categories: Set<Category>
+    categories: Set<Category>
 ) : InventoryItemRepository {
 
     private val categoryIdMap: Map<Int, Category> = categories.associateBy { it.id }
@@ -25,16 +27,16 @@ class InventoryItemRepositoryImpl(
     }
 
 
-    override suspend fun getAllItems(): List<InventoryItem> {
-        return itemDao.getAllItems().map(this::convert)
+    override fun getAllItems(): Flow<List<InventoryItem>> {
+        return itemDao.getAllItems().map { it.map(this::convert) }
     }
 
-    override suspend fun getItems(category: Category): List<InventoryItem> {
-        return mutableListOf()
+    override suspend fun getItems(category: Category): Flow<List<InventoryItem>> {
+        return itemDao.getItems(category.id).map { it.map(this::convert) }
     }
 
-    override suspend fun getPersonsWithoutCategory(): List<InventoryItem> {
-        return mutableListOf()
+    override suspend fun getItemsWithoutCategory(): Flow<List<InventoryItem>> {
+        return itemDao.getItemsWithoutCategory().map { it.map(this::convert) }
     }
 
     private fun convert(item: ItemEntity): InventoryItem =

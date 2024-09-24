@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.tledkov.hikelists.App
@@ -15,8 +16,16 @@ import kotlinx.coroutines.launch
 
 
 const val ITEMS_KEY: String = "items"
+
 class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
 
+    private val viewModel: InventoryViewModel by activityViewModels {
+        InventoryViewModelFactory(
+            requireActivity().application,
+            (requireActivity().application as App).categoryRepository,
+            (requireActivity().application as App).inventoryItemRepository,
+        )
+    }
     private var _binding: FragmentInventoryBinding? = null
 
     // This property is only valid between onCreateView and
@@ -34,9 +43,13 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
         val root: View = binding.root
 
         initRecyclerView()
+        val position: Int = arguments?.getInt(ITEMS_KEY)!!
 
-        val items = arguments?.getSerializable(ITEMS_KEY)
-        itemAdapter.setItems((items as AllInventoryFragment.TabData).items)
+        viewModel.allItemsLd.observe(viewLifecycleOwner) { items ->
+            items.let {
+                itemAdapter.setItems(it)
+            }
+        }
 
         return root
     }

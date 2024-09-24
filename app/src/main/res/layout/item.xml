@@ -3,54 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp">
+    android:layout_height="wrap_content">
 
-<!--    <ImageView-->
-<!--        android:id="@+id/avatarImageView"-->
-<!--        android:layout_width="40dp"-->
-<!--        android:layout_height="40dp"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:layout_marginBottom="8dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/item_select_btn"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        app:backgroundTint="@android:color/background_light"
+        app:tint="@android:color/holo_green_dark"
+        app:fabCustomSize="36dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="0dp"
+        android:id="@+id/item_name_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/descriptionTextView"
-        app:layout_constraintEnd_toStartOf="@+id/weightTextView"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/item_description_text"
+        app:layout_constraintStart_toEndOf="@id/item_select_btn"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Name long long long long long long long long " />
 
     <TextView
-        android:id="@+id/descriptionTextView"
+        android:id="@+id/item_description_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="2dp"
         app:layout_constraintBottom_toTopOf="@id/separator"
-        app:layout_constraintEnd_toStartOf="@+id/weightTextView"
-        app:layout_constraintStart_toStartOf="@+id/nameTextView"
-        app:layout_constraintTop_toBottomOf="@+id/nameTextView"
+        app:layout_constraintEnd_toStartOf="@+id/item_weight_text"
+        app:layout_constraintStart_toStartOf="@+id/item_name_text"
+        app:layout_constraintTop_toBottomOf="@+id/item_name_text"
         tools:text="Description" />
 
     <TextView
-        android:id="@+id/weightTextView"
+        android:id="@+id/item_weight_text"
         android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/item_name_text" />
 
     <View
         android:id="@+id/separator"
@@ -59,6 +55,6 @@
         android:background="@color/separatorGray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/descriptionTextView" />
+        app:layout_constraintStart_toEndOf="@+id/item_select_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
