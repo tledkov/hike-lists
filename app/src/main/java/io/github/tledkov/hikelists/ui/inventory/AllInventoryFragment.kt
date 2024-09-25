@@ -54,62 +54,13 @@ class AllInventoryFragment : Fragment() {
             dynamicFragmentAdapter.notifyDataSetChanged()
         }
 
-        binding.allItemsToolbarAddItemBtn.setOnClickListener {
-            it.findNavController().navigate(R.id.action_navigation_inventory_to_editItemFragment)
-
-//            val itemEntity = InventoryItem(
-//                name = "Name " + ThreadLocalRandom.current().nextInt(),
-//                description = "Some description " + UUID.randomUUID(),
-//                weight = Weight.from(ThreadLocalRandom.current().nextInt() % 5000)
-//            )
-//
-//            itemAdapter.addItem(itemEntity)
-//
-//            insertItem(itemEntity)
+        inventoryVm.allItemsLd.observe(viewLifecycleOwner) { allItems ->
+            inventoryVm.updateAllItems(allItems)
+            dynamicFragmentAdapter.notifyDataSetChanged()
         }
 
-
-        loadTabData()
+        binding.allItemsToolbarAddItemBtn.setOnClickListener {
+            it.findNavController().navigate(R.id.action_navigation_inventory_to_editItemFragment)
+        }
     }
-
-    private fun loadTabData() {
-        // Work on background thread
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            val allItems: List<InventoryItem> =
-//                (activity?.applicationContext as App).inventoryItemRepository.getAllItems()
-//            val categories: List<Category> =
-//                (activity?.applicationContext as App).categoryRepository.getAllCategories()
-//
-//            val inventory = Inventory(categories, allItems)
-//
-//            tabData.add(TabData(inventory.allInventoryItems, binding.root.resources.getString(R.string.category_all_items)))
-//
-//            for (cat in categories) {
-//                tabData.add(TabData(inventory.itemsByCategory[cat]!!, cat))
-//            }
-//
-//            tabData.add(TabData(inventory.withoutCategoryItems, binding.root.resources.getString(R.string.category_not_category)))
-//
-//            withContext(Dispatchers.Main) {
-//                dynamicFragmentAdapter.notifyDataSetChanged()
-//            }
-//        }
-    }
-
-//    inner class TabData(
-//        val items: List<InventoryItem>,
-//        private val category: Category?,
-//        private val name: String?
-//    ) : Serializable {
-//        constructor(items: List<InventoryItem>, category: Category) : this(items, category, null)
-//        constructor(items: List<InventoryItem>, name: String) : this(items, null, name)
-//
-//        fun name(): String {
-//            return if (name != null) {
-//                return name
-//            } else {
-//                category!!.name
-//            }
-//        }
-//    }
 }

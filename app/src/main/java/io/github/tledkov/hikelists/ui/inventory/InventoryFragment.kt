@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.tledkov.hikelists.App
+import io.github.tledkov.hikelists.R
 import io.github.tledkov.hikelists.databinding.FragmentInventoryBinding
 import io.github.tledkov.hikelists.domain.InventoryItem
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +49,7 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
 
         viewModel.allItemsLd.observe(viewLifecycleOwner) { items ->
             items.let {
-                itemAdapter.setItems(it)
+                itemAdapter.setItems(viewModel.tabs[position].items)
             }
         }
 
@@ -69,7 +71,8 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
         }
     }
 
-    override fun onItemClicked(item: InventoryItem) {
+    override fun onItemClicked(view: View, item: InventoryItem) {
+        view.findNavController().navigate(R.id.action_navigation_inventory_to_editItemFragment)
     }
 
     private fun insertItem(item: InventoryItem) {

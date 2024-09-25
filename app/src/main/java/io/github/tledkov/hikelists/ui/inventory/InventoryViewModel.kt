@@ -3,18 +3,14 @@ package io.github.tledkov.hikelists.ui.inventory
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.createSavedStateHandle
-import androidx.lifecycle.viewmodel.CreationExtras
-import io.github.tledkov.hikelists.App
+import androidx.lifecycle.viewModelScope
 import io.github.tledkov.hikelists.R
 import io.github.tledkov.hikelists.data.CategoryRepository
 import io.github.tledkov.hikelists.data.InventoryItemRepository
 import io.github.tledkov.hikelists.domain.Category
 import io.github.tledkov.hikelists.domain.InventoryItem
+import kotlinx.coroutines.launch
 import java.io.Serializable
 
 class InventoryViewModel(
@@ -24,14 +20,25 @@ class InventoryViewModel(
 ) : AndroidViewModel(app) {
 
     var tabs: MutableList<TabData> = mutableListOf()
+    var tabsByCategoryId: MutableMap<Int, TabData> = mutableMapOf()
 
+    var categories: MutableList<Category> = mutableListOf()
     val categoriesLd: LiveData<List<Category>> = categoryRepository.getAllCategories().asLiveData()
 
     var allItems: MutableList<InventoryItem> = mutableListOf()
-    val allItemsLd: LiveData<List<InventoryItem>> = inventoryItemRepository.getAllItems().asLiveData()
+    val allItemsLd: LiveData<List<InventoryItem>> =
+        inventoryItemRepository.getAllItems().asLiveData()
 
-    fun updateCategories(categories: List<Category>) {
+    fun updateCategories(cats: List<Category>) {
+        categories = cats.toMutableList()
+
+        updateTabs()
+    }
+
+    private fun updateTabs() {
         tabs.clear()
+        tabsByCategoryId.clear()
+
         tabs.add(
             TabData(
                 app.resources.getString(R.string.category_all_items)
@@ -39,75 +46,38 @@ class InventoryViewModel(
         )
 
         tabs.addAll(categories.map { TabData(it) })
+        tabsByCategoryId.putAll(
+            tabs
+                .filter { it.category != null }
+                .map { it.category!!.id to it }
+        )
+
+        // Handle items
+        tabs.first().items.addAll(allItems)
+
+        allItems.forEach { item ->
+            item.category?.let {
+                tabsByCategoryId[it.id]?.items?.add(item)
+            }
+        }
     }
 
-    fun updateItems(items: List<InventoryItem>) {
-        allItems.clear()
+    fun updateAllItems(items: List<InventoryItem>) {
         allItems = items.toMutableList()
+
+        updateTabs()
     }
 
-
-//    val inventory: MutableList<TabData>
-//
-//        init {
-//            inventory = categoryRepository.getAllCategoriesF()
-//                .zip(inventoryItemRepository.getAllItemsF()) { categories, allItems ->
-//                    val inventory = Inventory(categories, allItems)
-//
-//                    val tabsData: MutableList<TabData> = mutableListOf()
-//
-//                    tabsData.add(
-//                        TabData(
-//                            MutableLiveData(inventory.allInventoryItems),
-//                            app.resources.getString(R.string.category_all_items)
-//                        )
-//                    )
-//
-//                    for (cat in categories) {
-//                        tabsData.add(TabData(MutableLiveData(inventory.itemsByCategory[cat]!!), cat))
-//                    }
-//
-//                    tabsData.add(
-//                        TabData(
-//                            MutableLiveData(inventory.withoutCategoryItems),
-//                            app.resources.getString(R.string.category_not_category)
-//                        )
-//                    )
-//
-//                    return@zip tabsData
-//                }.toList()
-//        }
-//        get() = categoryRepository.getAllCategoriesF()
-//            .zip(inventoryItemRepository.getAllItemsF()) { categories, allItems ->
-//                val inventory = Inventory(categories, allItems)
-//
-//                val tabsData: MutableList<TabData> = mutableListOf()
-//
-//                tabsData.add(
-//                    TabData(
-//                        MutableLiveData(inventory.allInventoryItems),
-//                        app.resources.getString(R.string.category_all_items)
-//                    )
-//                )
-//
-//                for (cat in categories) {
-//                    tabsData.add(TabData(MutableLiveData(inventory.itemsByCategory[cat]!!), cat))
-//                }
-//
-//                tabsData.add(
-//                    TabData(
-//                        MutableLiveData(inventory.withoutCategoryItems),
-//                        app.resources.getString(R.string.category_not_category)
-//                    )
-//                )
-//
-//                return@zip tabsData
-//            }.asLiveData()
-
+    fun upsertItem(item: InventoryItem) {
+        viewModelScope.launch {
+            inventoryItemRepository.upsert(item)
+        }
+    }
 
     class TabData(
-        private val category: Category?,
-        private val name: String?
+        val category: Category?,
+        val name: String?,
+        val items: MutableList<InventoryItem> = mutableListOf()
     ) : Serializable {
         constructor(category: Category) : this(
             category,

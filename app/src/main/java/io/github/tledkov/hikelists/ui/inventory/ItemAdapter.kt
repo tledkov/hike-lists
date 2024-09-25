@@ -1,6 +1,7 @@
 package io.github.tledkov.hikelists.ui.inventory
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tledkov.hikelists.data.entity.ItemEntity
@@ -46,6 +47,6 @@ class ItemAdapter(private val itemClickListener: OnItemClickListener) :
     override fun getItemCount() = itemsList.size
 
     interface OnItemClickListener {
-        fun onItemClicked(item: InventoryItem)
+        fun onItemClicked(view: View, item: InventoryItem)
     }
 }

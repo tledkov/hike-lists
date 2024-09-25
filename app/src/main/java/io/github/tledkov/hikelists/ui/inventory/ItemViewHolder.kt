@@ -18,7 +18,7 @@ class ItemViewHolder(
                 itemView.context.resources.getString(R.string.weight_gram, weight.value())
 
             binding.root.setOnClickListener {
-                itemClickListener.onItemClicked(item)
+                itemClickListener.onItemClicked(it, item)
             }
         }
     }
