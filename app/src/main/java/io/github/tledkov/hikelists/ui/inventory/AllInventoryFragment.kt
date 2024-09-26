@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import io.github.tledkov.hikelists.App
 import io.github.tledkov.hikelists.R
@@ -60,6 +61,7 @@ class AllInventoryFragment : Fragment() {
         }
 
         binding.allItemsToolbarAddItemBtn.setOnClickListener {
+            inventoryVm.editingItem = null
             it.findNavController().navigate(R.id.action_navigation_inventory_to_editItemFragment)
         }
     }

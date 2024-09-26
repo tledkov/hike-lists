@@ -21,7 +21,7 @@ const val ITEMS_KEY: String = "items"
 
 class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
 
-    private val viewModel: InventoryViewModel by activityViewModels {
+    private val inventoryVm: InventoryViewModel by activityViewModels {
         InventoryViewModelFactory(
             requireActivity().application,
             (requireActivity().application as App).categoryRepository,
@@ -47,9 +47,9 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
         initRecyclerView()
         val position: Int = arguments?.getInt(ITEMS_KEY)!!
 
-        viewModel.allItemsLd.observe(viewLifecycleOwner) { items ->
+        inventoryVm.allItemsLd.observe(viewLifecycleOwner) { items ->
             items.let {
-                itemAdapter.setItems(viewModel.tabs[position].items)
+                itemAdapter.setItems(inventoryVm.tabs[position].items)
             }
         }
 
@@ -72,13 +72,7 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
     }
 
     override fun onItemClicked(view: View, item: InventoryItem) {
+        inventoryVm.editingItem = item
         view.findNavController().navigate(R.id.action_navigation_inventory_to_editItemFragment)
-    }
-
-    private fun insertItem(item: InventoryItem) {
-        // Work on background thread
-        lifecycleScope.launch(Dispatchers.IO) {
-            (activity?.applicationContext as App).inventoryItemRepository.insert(item)
-        }
     }
 }

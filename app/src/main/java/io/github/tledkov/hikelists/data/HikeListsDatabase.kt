@@ -66,14 +66,14 @@ abstract class HikeListsDatabase : RoomDatabase() {
                 1,
                 context.resources.getString(R.string.category_backpack),
                 "",
-                context.resources.getColor(R.color.category_backpack).toString()
+                String.format("#%06X", 0xFFFFFF and (context.resources.getColor(R.color.category_backpack)))
             )
 
             val catToSleep = CategoryEntity(
                 2,
                 context.resources.getString(R.string.category_to_sleep),
                 "",
-                context.resources.getColor(R.color.category_to_sleep).toString()
+                String.format("#%06X", 0xFFFFFF and (context.resources.getColor(R.color.category_to_sleep)))
             )
 
             db.categoryDao().upsert(catBackpack)
@@ -84,7 +84,7 @@ abstract class HikeListsDatabase : RoomDatabase() {
                     3,
                     context.resources.getString(R.string.category_primary),
                     "",
-                    context.resources.getColor(R.color.category_primary).toString()
+                    String.format("#%06X", 0xFFFFFF and (context.resources.getColor(R.color.category_primary)))
                 )
             )
 
@@ -93,7 +93,7 @@ abstract class HikeListsDatabase : RoomDatabase() {
                     4,
                     context.resources.getString(R.string.category_secondary),
                     "",
-                    context.resources.getColor(R.color.category_secondary).toString()
+                    String.format("#%06X", 0xFFFFFF and (context.resources.getColor(R.color.category_secondary)))
                 )
             )
 
@@ -102,7 +102,7 @@ abstract class HikeListsDatabase : RoomDatabase() {
                     5,
                     context.resources.getString(R.string.category_clothing),
                     "",
-                    context.resources.getColor(R.color.category_clothing).toString()
+                    String.format("#%06X", 0xFFFFFF and (context.resources.getColor(R.color.category_clothing)))
                 )
             )
 
@@ -172,6 +172,20 @@ abstract class HikeListsDatabase : RoomDatabase() {
                     ""
                 )
             )
+
+
+            for (i in 0..20) {
+                db.itemDao().upsert(
+                    ItemEntity(
+                        0,
+                        1,
+                        1000 + i,
+                        "Test item $i",
+                        "",
+                        ""
+                    )
+                )
+            }
         }
     }
 }

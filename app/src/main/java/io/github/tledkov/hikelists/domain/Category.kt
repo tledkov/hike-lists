@@ -8,4 +8,8 @@ data class Category(
     val name: String,
     val description: String,
     val color: Color
-) : Serializable
+) : Serializable {
+    override fun toString(): String {
+        return name
+    }
+}

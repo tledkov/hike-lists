@@ -49,7 +49,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="@string/edit_item_item_name"
-            android:textAlignment="center"
+            android:layout_gravity="left"
             android:textSize="20sp" />
 
         <EditText
@@ -58,6 +58,8 @@
             android:layout_height="wrap_content"
             android:ems="12"
             android:inputType="text"
+            android:layout_marginStart="8dp"
+            android:layout_gravity="left"
             android:text="Name" />
     </LinearLayout>
 
@@ -76,8 +78,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginStart="8dp"
                 android:text="@string/edit_item_category"
-                android:textAlignment="center"
                 android:textSize="20sp" />
 
             <TextView
@@ -85,8 +87,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginStart="8dp"
                 android:text="@string/edit_item_weight"
-                android:textAlignment="center"
                 android:textSize="20sp" />
         </TableRow>
 

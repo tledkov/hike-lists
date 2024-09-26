@@ -1,5 +1,6 @@
 package io.github.tledkov.hikelists.ui.inventory
 
+import android.content.res.ColorStateList
 import androidx.recyclerview.widget.RecyclerView
 import io.github.tledkov.hikelists.R
 import io.github.tledkov.hikelists.databinding.ItemBinding
@@ -19,6 +20,10 @@ class ItemViewHolder(
 
             binding.root.setOnClickListener {
                 itemClickListener.onItemClicked(it, item)
+            }
+
+            item.category?.color?.let {
+                binding.itemSelectBtn.backgroundTintList = ColorStateList.valueOf(it.toArgb())
             }
         }
     }

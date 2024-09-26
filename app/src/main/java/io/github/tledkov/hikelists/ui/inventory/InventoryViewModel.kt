@@ -29,6 +29,8 @@ class InventoryViewModel(
     val allItemsLd: LiveData<List<InventoryItem>> =
         inventoryItemRepository.getAllItems().asLiveData()
 
+    var editingItem: InventoryItem? = null
+
     fun updateCategories(cats: List<Category>) {
         categories = cats.toMutableList()
 

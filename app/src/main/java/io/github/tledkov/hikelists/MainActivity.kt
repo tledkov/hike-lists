@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -19,7 +16,7 @@ import io.github.tledkov.hikelists.ui.inventory.InventoryViewModelFactory
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: InventoryViewModel by viewModels {
+    private val inventoryVm: InventoryViewModel by viewModels {
         InventoryViewModelFactory(
             application,
             (application as App).categoryRepository,

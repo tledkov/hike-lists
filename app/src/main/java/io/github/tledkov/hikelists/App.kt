@@ -32,7 +32,4 @@ class App : Application() {
             )
         }
     }
-
-    companion object {
-    }
 }
