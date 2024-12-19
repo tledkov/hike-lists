@@ -76,6 +76,12 @@ class InventoryViewModel(
         }
     }
 
+    fun deleteItem(itemId: Int) {
+        viewModelScope.launch {
+            inventoryItemRepository.delete(itemId)
+        }
+    }
+
     class TabData(
         val category: Category?,
         val name: String?,

@@ -14,18 +14,17 @@ class InventoryItemRepositoryImpl(
 
     private val categoryIdMap: Map<Int, Category> = categories.associateBy { it.id }
 
-    override suspend fun insert(item: InventoryItem): Long {
-        return itemDao.insert(convert(item))
-    }
-
     override suspend fun upsert(item: InventoryItem) {
         itemDao.upsert(convert(item))
     }
 
-    override suspend fun delete(item: InventoryItem) {
-        itemDao.deleteById(item.id)
+    override suspend fun getById(id: Int): InventoryItem {
+        return convert(itemDao.getById(id))
     }
 
+    override suspend fun delete(id: Int) {
+        itemDao.deleteById(id)
+    }
 
     override fun getAllItems(): Flow<List<InventoryItem>> {
         return itemDao.getAllItems().map { it.map(this::convert) }

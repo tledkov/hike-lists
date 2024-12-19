@@ -11,10 +11,12 @@ data class ItemsListEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
-    val description: String
+    val description: String,
+    val color: String?,
 ) {
 
     companion object {
         const val TABLE_NAME = "items_list"
+        const val ID = "id"
     }
 }

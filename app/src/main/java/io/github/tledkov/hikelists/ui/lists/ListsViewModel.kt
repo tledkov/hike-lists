@@ -1,13 +1,26 @@
 package io.github.tledkov.hikelists.ui.lists
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import io.github.tledkov.hikelists.data.CategoryRepository
+import io.github.tledkov.hikelists.data.InventoryItemRepository
+import io.github.tledkov.hikelists.data.InventoryListRepository
+import io.github.tledkov.hikelists.domain.Category
+import io.github.tledkov.hikelists.domain.InventoryList
 
-class ListsViewModel : ViewModel() {
+class ListsViewModel(
+    private val app: Application,
+    private val inventoryListRepository: InventoryListRepository,
+) : AndroidViewModel(app) {
+
+    val listLd: LiveData<List<InventoryList>> = inventoryListRepository.getAllInventoryLists().asLiveData()
 
     private val _text = MutableLiveData<String>().apply {
-        value = "Please add some inventory to create backpack lists"
+        value = "Create backpack lists"
     }
     val text: LiveData<String> = _text
 }

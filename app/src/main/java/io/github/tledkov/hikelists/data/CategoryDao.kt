@@ -9,8 +9,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CategoryDao {
-    @Query("SELECT 1")
-    suspend fun init(): Int
 
     @Insert
     suspend fun insert(categoryEntity: CategoryEntity): Long

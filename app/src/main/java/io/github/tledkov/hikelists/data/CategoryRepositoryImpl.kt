@@ -41,7 +41,6 @@ class CategoryRepositoryImpl(
         )
     }
 
-
     private fun convert(cat: Category): CategoryEntity =
         CategoryEntity(
             cat.id,

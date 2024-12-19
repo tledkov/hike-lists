@@ -6,6 +6,8 @@ import io.github.tledkov.hikelists.data.CategoryRepositoryImpl
 import io.github.tledkov.hikelists.data.InventoryItemRepository
 import io.github.tledkov.hikelists.data.InventoryItemRepositoryImpl
 import io.github.tledkov.hikelists.data.HikeListsDatabase
+import io.github.tledkov.hikelists.data.InventoryListRepository
+import io.github.tledkov.hikelists.data.InventoryListRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -15,12 +17,12 @@ class App : Application() {
 
     lateinit var inventoryItemRepository: InventoryItemRepository
     lateinit var categoryRepository: CategoryRepository
+    lateinit var inventoryListRepository: InventoryListRepository
 
     override fun onCreate() {
         super.onCreate()
 
         database = HikeListsDatabase.buildDatabase(applicationContext)
-        database.init()
 
         categoryRepository = CategoryRepositoryImpl(database.categoryDao())
 
@@ -31,5 +33,11 @@ class App : Application() {
                 categories
             )
         }
+
+        inventoryListRepository = InventoryListRepositoryImpl(
+            database.itemListsDao(),
+            database.relationItemToItemListsDao(),
+            inventoryItemRepository,
+        )
     }
 }

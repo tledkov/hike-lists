@@ -23,8 +23,13 @@
     <string name="edit_item_item_name">Item name:</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="delete">Delete</string>
     <string name="edit_item_category">Category:</string>
     <string name="edit_item_weight">Weight:</string>
     <string name="edit_item_notes">Notes:</string>
+
+    <string name="alert_invalid_weight_title">Invalid weight</string>
+    <string name="alert_invalid_weight_empty">Please specify the weight</string>
+    <string name="alert_invalid_weight_invalid">Invalid weight input:</string>
 
 </resources>

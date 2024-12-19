@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import io.github.tledkov.hikelists.R
 import io.github.tledkov.hikelists.data.entity.CategoryEntity
 import io.github.tledkov.hikelists.data.entity.ItemEntity
-import io.github.tledkov.hikelists.data.entity.ItemItemsList
+import io.github.tledkov.hikelists.data.entity.RelationItemToItemsListEntity
 import io.github.tledkov.hikelists.data.entity.ItemsListEntity
 import kotlinx.coroutines.runBlocking
 
@@ -17,21 +17,19 @@ import kotlinx.coroutines.runBlocking
         ItemEntity::class,
         CategoryEntity::class,
         ItemsListEntity::class,
-        ItemItemsList::class
+        RelationItemToItemsListEntity::class
     ],
     version = 1
 )
 abstract class HikeListsDatabase : RoomDatabase() {
 
     abstract fun itemDao(): ItemDao
+
     abstract fun categoryDao(): CategoryDao
 
-    fun init() {
-        runBlocking{
-            itemDao().init()
-            categoryDao().init()
-        }
-    }
+    abstract fun itemListsDao(): ItemListsDao
+
+    abstract fun relationItemToItemListsDao(): RelationItemToItemListsDao
 
     companion object {
         private const val DATABASE_NAME = "hiking-list.db"
@@ -66,14 +64,20 @@ abstract class HikeListsDatabase : RoomDatabase() {
                 1,
                 context.resources.getString(R.string.category_backpack),
                 "",
-                String.format("#%06X", 0xFFFFFF and (context.resources.getColor(R.color.category_backpack)))
+                String.format(
+                    "#%06X",
+                    0xFFFFFF and (context.resources.getColor(R.color.category_backpack))
+                )
             )
 
             val catToSleep = CategoryEntity(
                 2,
                 context.resources.getString(R.string.category_to_sleep),
                 "",
-                String.format("#%06X", 0xFFFFFF and (context.resources.getColor(R.color.category_to_sleep)))
+                String.format(
+                    "#%06X",
+                    0xFFFFFF and (context.resources.getColor(R.color.category_to_sleep))
+                )
             )
 
             db.categoryDao().upsert(catBackpack)
@@ -84,7 +88,10 @@ abstract class HikeListsDatabase : RoomDatabase() {
                     3,
                     context.resources.getString(R.string.category_primary),
                     "",
-                    String.format("#%06X", 0xFFFFFF and (context.resources.getColor(R.color.category_primary)))
+                    String.format(
+                        "#%06X",
+                        0xFFFFFF and (context.resources.getColor(R.color.category_primary))
+                    )
                 )
             )
 
@@ -93,7 +100,10 @@ abstract class HikeListsDatabase : RoomDatabase() {
                     4,
                     context.resources.getString(R.string.category_secondary),
                     "",
-                    String.format("#%06X", 0xFFFFFF and (context.resources.getColor(R.color.category_secondary)))
+                    String.format(
+                        "#%06X",
+                        0xFFFFFF and (context.resources.getColor(R.color.category_secondary))
+                    )
                 )
             )
 
@@ -102,7 +112,10 @@ abstract class HikeListsDatabase : RoomDatabase() {
                     5,
                     context.resources.getString(R.string.category_clothing),
                     "",
-                    String.format("#%06X", 0xFFFFFF and (context.resources.getColor(R.color.category_clothing)))
+                    String.format(
+                        "#%06X",
+                        0xFFFFFF and (context.resources.getColor(R.color.category_clothing))
+                    )
                 )
             )
 
@@ -173,7 +186,6 @@ abstract class HikeListsDatabase : RoomDatabase() {
                 )
             )
 
-
             for (i in 0..20) {
                 db.itemDao().upsert(
                     ItemEntity(
@@ -186,6 +198,44 @@ abstract class HikeListsDatabase : RoomDatabase() {
                     )
                 )
             }
+
+            db.itemListsDao().upsert(
+                ItemsListEntity(1, "Winter staff", "WInter trip staff", "")
+            )
+
+            db.itemListsDao().upsert(
+                ItemsListEntity(2, "Summer packraft solo", "Summer packraft solo trip staff", "")
+            )
+
+            db.relationItemToItemListsDao().upsert(
+                RelationItemToItemsListEntity(
+                    1, 1, 1, 1, false,
+                )
+            )
+
+            db.relationItemToItemListsDao().upsert(
+                RelationItemToItemsListEntity(
+                    2, 2, 1, 2, false,
+                )
+            )
+
+            db.relationItemToItemListsDao().upsert(
+                RelationItemToItemsListEntity(
+                    3, 3, 1, 1, false,
+                )
+            )
+
+            db.relationItemToItemListsDao().upsert(
+                RelationItemToItemsListEntity(
+                    4, 4, 2, 1, false,
+                )
+            )
+
+            db.relationItemToItemListsDao().upsert(
+                RelationItemToItemsListEntity(
+                    5, 1, 2, 1, true,
+                )
+            )
         }
     }
 }
