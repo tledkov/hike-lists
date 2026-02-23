@@ -9,7 +9,7 @@
     tools:context="io.github.tledkov.hikelists.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itemList"
+        android:id="@+id/inventoryItemList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"/>

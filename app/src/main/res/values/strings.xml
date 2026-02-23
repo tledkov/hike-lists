@@ -31,5 +31,6 @@
     <string name="alert_invalid_weight_title">Invalid weight</string>
     <string name="alert_invalid_weight_empty">Please specify the weight</string>
     <string name="alert_invalid_weight_invalid">Invalid weight input:</string>
+    <string name="list_main_list_name">List name:</string>
 
 </resources>

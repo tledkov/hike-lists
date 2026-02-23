@@ -64,7 +64,7 @@ class InventoryFragment : Fragment(), ItemAdapter.OnItemClickListener {
     private fun initRecyclerView() {
         itemAdapter = ItemAdapter(this)
 
-        with(binding.itemList) {
+        with(binding.inventoryItemList) {
             this.layoutManager = LinearLayoutManager(context)
             this.adapter = itemAdapter
             this.setHasFixedSize(true)

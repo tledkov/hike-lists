@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_list_main_edit"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.github.tledkov.hikelists.MainActivity">
+
+    <ImageButton
+        android:id="@+id/list_main_edit_back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_24" />
+
+    <TextView
+        android:id="@+id/list_main_edit_text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Edit Item:"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toRightOf="@id/list_main_edit_back_btn"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/list_main_list_main_edit_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/list_main_edit_text_title">
+
+        <TextView
+            android:id="@+id/list_main_edit_text_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/list_main_list_name"
+            android:layout_gravity="left"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edit_list_main_list_main_edit_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="12"
+            android:inputType="text"
+            android:layout_marginStart="8dp"
+            android:layout_gravity="left"
+            android:text="Name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/list_main_edit_layout_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/list_main_list_main_edit_name_layout">
+
+        <Button
+            android:id="@+id/list_main_edit_cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/list_main_edit_save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/list_main_edit_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="@string/delete" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
