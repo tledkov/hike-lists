@@ -1,16 +1,16 @@
 package io.github.tledkov.hikelists.ui.lists
 
 import android.app.Application
+import android.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import io.github.tledkov.hikelists.data.CategoryRepository
-import io.github.tledkov.hikelists.data.InventoryItemRepository
+import androidx.lifecycle.viewModelScope
 import io.github.tledkov.hikelists.data.InventoryListRepository
-import io.github.tledkov.hikelists.domain.Category
 import io.github.tledkov.hikelists.domain.InventoryList
+import kotlinx.coroutines.launch
 
 class ListsViewModel(
     private val app: Application,
@@ -23,4 +23,28 @@ class ListsViewModel(
         value = "Create backpack lists"
     }
     val text: LiveData<String> = _text
+
+    private var listsCache: List<InventoryList> = emptyList()
+
+    init {
+        listLd.observeForever { lists ->
+            listsCache = lists
+        }
+    }
+
+    fun getListById(id: Int): InventoryList? {
+        return listsCache.find { it.id == id }
+    }
+
+    fun upsertList(inventoryList: InventoryList) {
+        viewModelScope.launch {
+            inventoryListRepository.upsert(inventoryList)
+        }
+    }
+
+    fun deleteList(inventoryList: InventoryList) {
+        viewModelScope.launch {
+            inventoryListRepository.delete(inventoryList)
+        }
+    }
 }

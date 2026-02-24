@@ -9,7 +9,11 @@
         android:id="@+id/navigation_lists"
         android:name="io.github.tledkov.hikelists.ui.lists.ListsFragment"
         android:label="@string/menu_lists"
-        tools:layout="@layout/fragment_lists" />
+        tools:layout="@layout/fragment_lists">
+        <action
+            android:id="@+id/action_navigation_lists_to_editListFragment"
+            app:destination="@id/editListFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_inventory"
@@ -31,4 +35,14 @@
         android:id="@+id/editItemFragment"
         android:name="io.github.tledkov.hikelists.ui.inventory.EditItemFragment"
         android:label="EditItemFragment" />
+
+    <fragment
+        android:id="@+id/editListFragment"
+        android:name="io.github.tledkov.hikelists.ui.lists.EditListFragment"
+        android:label="EditListFragment">
+        <argument
+            android:name="listId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 </navigation>
