@@ -10,11 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.tledkov.hikelists.App
+import io.github.tledkov.hikelists.R
 import io.github.tledkov.hikelists.databinding.ListMainEditBinding
 import io.github.tledkov.hikelists.domain.InventoryList
 
-class EditListFragment : Fragment() {
+class EditListFragment : Fragment(), ListItemsAdapter.OnItemClickListener {
 
     private val args: EditListFragmentArgs by navArgs()
 
@@ -27,6 +29,9 @@ class EditListFragment : Fragment() {
 
     private var _binding: ListMainEditBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var itemsAdapter: ListItemsAdapter
+    private var currentList: InventoryList? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,40 +46,67 @@ class EditListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val listId = args.listId
-        val existingList = listsVm.getListById(listId)
+        currentList = listsVm.getListById(listId)
 
-        if (existingList != null) {
-            binding.listMainEditTextTitle.text = "Edit List"
-            binding.editListMainListMainEditName.setText(existingList.name)
-            binding.listMainEditDeleteBtn.visibility = View.VISIBLE
-        } else {
-            binding.listMainEditTextTitle.text = "New List"
-            binding.listMainEditDeleteBtn.visibility = View.INVISIBLE
+        setupToolbar()
+        setupNameField()
+        setupRecyclerView()
+        setupFab()
+    }
+
+    private fun setupToolbar() {
+        val isEditing = currentList != null
+
+        binding.listMainEditToolbar.setNavigationOnClickListener { view ->
+            view.findNavController().popBackStack()
         }
 
-        binding.listMainEditBackBtn.setOnClickListener {
-            it.findNavController().popBackStack()
-        }
-
-        binding.listMainEditCancelBtn.setOnClickListener {
-            it.findNavController().popBackStack()
-        }
-
-        binding.listMainEditSaveBtn.setOnClickListener {
-            saveList()
-            it.findNavController().popBackStack()
-        }
-
-        binding.listMainEditDeleteBtn.setOnClickListener {
-            existingList?.let { list ->
-                listsVm.deleteList(list)
+        binding.listMainEditToolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_save -> {
+                    saveList()
+                    requireView().findNavController().popBackStack()
+                    true
+                }
+                R.id.action_delete -> {
+                    currentList?.let { list ->
+                        listsVm.deleteList(list)
+                    }
+                    requireView().findNavController().popBackStack()
+                    true
+                }
+                else -> false
             }
-            it.findNavController().popBackStack()
         }
 
-        binding.listMainEditSaveBtn.isEnabled = false
+        binding.listMainEditToolbar.menu.findItem(R.id.action_delete).isVisible = isEditing
+    }
+
+    private fun setupNameField() {
+        currentList?.let { list ->
+            binding.editListMainListMainEditName.setText(list.name)
+        }
+
         binding.editListMainListMainEditName.doAfterTextChanged { text ->
-            binding.listMainEditSaveBtn.isEnabled = !text.isNullOrBlank()
+            binding.listMainEditToolbar.menu.findItem(R.id.action_save).isEnabled = !text.isNullOrBlank()
+        }
+    }
+
+    private fun setupRecyclerView() {
+        itemsAdapter = ListItemsAdapter(this)
+        binding.listMainEditItemsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = itemsAdapter
+        }
+
+        currentList?.let { list ->
+            itemsAdapter.setItems(list.items)
+        }
+    }
+
+    private fun setupFab() {
+        binding.listMainEditAddItemFab.setOnClickListener {
+            // TODO: Navigate to inventory to select items
         }
     }
 
@@ -82,23 +114,37 @@ class EditListFragment : Fragment() {
         val name = binding.editListMainListMainEditName.text.toString().trim()
         val listId = args.listId
 
-        if (listId != null) {
-            // Edit existing list
-            listsVm.getListById(listId)?.let { existingList ->
-                val updatedList = existingList.copy(name = name)
+        val updatedItems = mutableListOf<InventoryList.UsedItem>()
+        for (i in 0 until itemsAdapter.itemCount) {
+            updatedItems.add(itemsAdapter.getItemAt(i))
+        }
+
+        if (listId != -1) {
+            currentList?.let { existingList ->
+                val updatedList = existingList.copy(
+                    name = name,
+                    items = updatedItems
+                )
                 listsVm.upsertList(updatedList)
             }
         } else {
-            // Create new list
             val newList = InventoryList(
                 id = 0,
                 name = name,
                 description = "",
-                items = mutableListOf(),
+                items = updatedItems,
                 color = Color.valueOf(Color.GRAY)
             )
             listsVm.upsertList(newList)
         }
+    }
+
+    override fun onItemChecked(position: Int, isChecked: Boolean) {
+        itemsAdapter.updateItemChecked(position, isChecked)
+    }
+
+    override fun onItemRemoveClicked(position: Int) {
+        itemsAdapter.removeItemAt(position)
     }
 
     override fun onDestroyView() {
