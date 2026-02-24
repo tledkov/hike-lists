@@ -1,14 +1,16 @@
 package io.github.tledkov.hikelists.data
 
 import android.graphics.Color
+import androidx.room.Dao
 import io.github.tledkov.hikelists.data.entity.ItemsListEntity
+import io.github.tledkov.hikelists.data.entity.RelationItemToItemsListEntity
 import io.github.tledkov.hikelists.domain.Category
 import io.github.tledkov.hikelists.domain.InventoryItem
 import io.github.tledkov.hikelists.domain.InventoryList
 import io.github.tledkov.hikelists.domain.Weight
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.zip
 
 class InventoryListRepositoryImpl(
     private val itemListsDao: ItemListsDao,
@@ -17,7 +19,7 @@ class InventoryListRepositoryImpl(
 ) : InventoryListRepository {
 
     override suspend fun upsert(inventoryList: InventoryList): Long {
-        return itemListsDao.upsert(
+        var listId = itemListsDao.upsert(
             ItemsListEntity(
                 id = inventoryList.id,
                 name = inventoryList.name,
@@ -25,6 +27,26 @@ class InventoryListRepositoryImpl(
                 color = inventoryList.color.toString(),
             )
         )
+
+        if (listId == -1L) {
+            listId = inventoryList.id.toLong()
+        }
+
+        // Удаляем старые связи и создаем новые
+        relationItemToItemListsDao.deleteByListId(listId.toInt())
+        inventoryList.items.forEach { usedItem ->
+            relationItemToItemListsDao.upsert(
+                RelationItemToItemsListEntity(
+                    id = 0,
+                    listId = listId.toInt(),
+                    itemId = usedItem.item.id,
+                    count = usedItem.count,
+                    checked = usedItem.checked
+                )
+            )
+        }
+
+        return listId
     }
 
     override suspend fun delete(inventoryList: InventoryList) {
@@ -33,7 +55,7 @@ class InventoryListRepositoryImpl(
 
     override fun getAllInventoryLists(): Flow<List<InventoryList>> {
         return itemListsDao.getAllItemsLists()
-            .zip(
+            .combine(
                 relationItemToItemListsDao.getAllItemsLists()
             ) { list, items ->
                 val lstMap: Map<Int, InventoryList> = list
@@ -66,7 +88,7 @@ class InventoryListRepositoryImpl(
                     )
                 }
 
-                return@zip lstMap.values.toList()
+                return@combine lstMap.values.toList()
             }
     }
 }

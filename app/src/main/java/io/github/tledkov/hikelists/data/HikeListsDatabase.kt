@@ -46,7 +46,7 @@ abstract class HikeListsDatabase : RoomDatabase() {
             return Room
                 .databaseBuilder(context, HikeListsDatabase::class.java, DATABASE_NAME)
                 .addCallback(object : Callback() {
-                    override fun onCreate(db: SupportSQLiteDatabase) {
+                    override fun onOpen(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
                         // insert the data on the IO Thread
                         ioThread {

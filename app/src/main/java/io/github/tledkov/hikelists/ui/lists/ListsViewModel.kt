@@ -24,18 +24,6 @@ class ListsViewModel(
     }
     val text: LiveData<String> = _text
 
-    private var listsCache: List<InventoryList> = emptyList()
-
-    init {
-        listLd.observeForever { lists ->
-            listsCache = lists
-        }
-    }
-
-    fun getListById(id: Int): InventoryList? {
-        return listsCache.find { it.id == id }
-    }
-
     fun upsertList(inventoryList: InventoryList) {
         viewModelScope.launch {
             inventoryListRepository.upsert(inventoryList)

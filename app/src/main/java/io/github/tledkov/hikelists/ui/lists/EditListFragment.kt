@@ -46,17 +46,25 @@ class EditListFragment : Fragment(), ListItemsAdapter.OnItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         val listId = args.listId
-        currentList = listsVm.getListById(listId)
 
         setupToolbar()
         setupNameField()
         setupRecyclerView()
         setupFab()
+
+        // Наблюдаем за изменениями списка
+        listsVm.listLd.observe(viewLifecycleOwner) { lists ->
+            val updatedList = lists.find { it.id == listId }
+            updatedList?.let { list ->
+                currentList = list
+                binding.editListMainListMainEditName.setText(list.name)
+                itemsAdapter.setItems(list.items)
+                updateToolbar(listId != -1)
+            }
+        }
     }
 
     private fun setupToolbar() {
-        val isEditing = currentList != null
-
         binding.listMainEditToolbar.setNavigationOnClickListener { view ->
             view.findNavController().popBackStack()
         }
@@ -78,15 +86,13 @@ class EditListFragment : Fragment(), ListItemsAdapter.OnItemClickListener {
                 else -> false
             }
         }
+    }
 
+    private fun updateToolbar(isEditing: Boolean) {
         binding.listMainEditToolbar.menu.findItem(R.id.action_delete).isVisible = isEditing
     }
 
     private fun setupNameField() {
-        currentList?.let { list ->
-            binding.editListMainListMainEditName.setText(list.name)
-        }
-
         binding.editListMainListMainEditName.doAfterTextChanged { text ->
             binding.listMainEditToolbar.menu.findItem(R.id.action_save).isEnabled = !text.isNullOrBlank()
         }
@@ -119,24 +125,24 @@ class EditListFragment : Fragment(), ListItemsAdapter.OnItemClickListener {
             updatedItems.add(itemsAdapter.getItemAt(i))
         }
 
-        if (listId != -1) {
-            currentList?.let { existingList ->
-                val updatedList = existingList.copy(
-                    name = name,
-                    items = updatedItems
-                )
-                listsVm.upsertList(updatedList)
-            }
+        val list = if (listId != -1) {
+            InventoryList(
+                id = listId,
+                name = name,
+                description = currentList?.description ?: "",
+                items = updatedItems,
+                color = currentList?.color ?: Color.valueOf(Color.GRAY)
+            )
         } else {
-            val newList = InventoryList(
+            InventoryList(
                 id = 0,
                 name = name,
                 description = "",
                 items = updatedItems,
                 color = Color.valueOf(Color.GRAY)
             )
-            listsVm.upsertList(newList)
         }
+        listsVm.upsertList(list)
     }
 
     override fun onItemChecked(position: Int, isChecked: Boolean) {
